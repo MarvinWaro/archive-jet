@@ -152,13 +152,10 @@
                 <td>March 2023</td>
                 <td>Folder #1</td>
                 <td>RD, DONE</td>
-                <td>IN-PROGRESS</td>
+                <td class="text-white bg-orange-500">InProgress</td>
             </tr>
         </tbody>
     </table>
 
 
 </div>
-
-
-

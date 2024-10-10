@@ -15,6 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.jsdelivr.net/npm/flowbite@latest/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
         <!-- Styles -->
@@ -45,4 +46,38 @@
 
         @livewireScripts
     </body>
+
+    <script>
+        if (document.getElementById("filter-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+            const dataTable = new simpleDatatables.DataTable("#filter-table", {
+                tableRender: (_data, table, type) => {
+                    if (type === "print") {
+                        return table
+                    }
+                    const tHead = table.childNodes[0]
+                    const filterHeaders = {
+                        nodeName: "TR",
+                        attributes: {
+                            class: "search-filtering-row"
+                        },
+                        childNodes: tHead.childNodes[0].childNodes.map(
+                            (_th, index) => ({nodeName: "TH",
+                                childNodes: [
+                                    {
+                                        nodeName: "INPUT",
+                                        attributes: {
+                                            class: "datatable-input",
+                                            type: "search",
+                                            "data-columns": "[" + index + "]"
+                                        }
+                                    }
+                                ]})
+                        )
+                    }
+                    tHead.childNodes.push(filterHeaders)
+                    return table
+                }
+            });
+        }
+    </script>
 </html>
