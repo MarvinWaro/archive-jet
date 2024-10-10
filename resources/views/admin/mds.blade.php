@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('ACIC Records') }}
+            {{ __('MDS Records') }}
         </h2>
     </x-slot>
 
@@ -9,9 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-5">
-                    WELCOME! MDS HERE!
-                    <br>
-                    MDS TABLE HERE BELOW
+                    <x-mds-components />
                 </div>
             </div>
         </div>
