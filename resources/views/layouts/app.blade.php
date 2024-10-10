@@ -13,6 +13,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@latest/dist/flowbite.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
+
 
         <!-- Styles -->
         @livewireStyles
