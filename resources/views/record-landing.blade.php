@@ -82,7 +82,7 @@
                         <div class="w-1/2 p-4">
                             <h2 class="text-2xl font-bold text-center">Ched Archiving Records</h2>
                             <p class="mt-2 text-gray-600 text-center">
-                                This is The repository of all records from ACIC and MDS Folder of the different Schools? Journal Voucher and its Number ADA.
+                                This is The repository of all records from ACIC and MDS Folder of the different Schools? Journal Voucher and its Number ADA check num.
                             </p>
                         </div>
                     </div>
