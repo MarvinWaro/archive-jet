@@ -1,5 +1,6 @@
 <div class="p-6 lg:p-8">
-    <x-application-logo class="block h-12 w-auto" />
+
+    <img src="{{ asset('img/CHED Logo New_20210406_CMYK_border_Logotype.svg') }}" alt="" class="max-w-[70%]"/>
 
     <h1 class="mt-8 text-2xl font-medium text-gray-900">
         CHED Record Archiving System
@@ -13,6 +14,7 @@
         the workflow for educational institutions.
     </p>
 </div>
+
 
 <div class="card-container mb-6">
     <div class="flex justify-center items-center mb-6">
