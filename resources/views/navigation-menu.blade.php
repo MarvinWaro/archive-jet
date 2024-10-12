@@ -17,20 +17,26 @@
                     </x-nav-link>
 
                     <x-nav-link href="{{ route('admin.acic') }}" :active="request()->routeIs('admin.acic')">
-                        {{ __('ACIC') }}
+                        {{ __('Acic') }}
                     </x-nav-link>
 
                     <x-nav-link href="{{ route('admin.mds') }}" :active="request()->routeIs('admin.mds')">
-                        {{ __('MDS') }}
+                        {{ __('Mds') }}
                     </x-nav-link>
 
                     <x-nav-link href="{{ route('admin.completed') }}" :active="request()->routeIs('admin.completed')">
-                        {{ __('COMPLETED') }}
+                        {{ __('Completed') }}
                     </x-nav-link>
 
                     <x-nav-link href="{{ route('admin.in-progress') }}" :active="request()->routeIs('admin.in-progress')">
-                        {{ __('IN-PROGRESS') }}
+                        {{ __('In-progress') }}
                     </x-nav-link>
+
+                    <x-nav-link href="{{ route('admin.folders') }}" :active="request()->routeIs('admin.folders')">
+                        {{ __('Folders') }}
+                    </x-nav-link>
+
+
                 </div>
             </div>
 

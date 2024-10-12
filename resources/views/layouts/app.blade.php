@@ -18,6 +18,7 @@
         </div>
         @stack('modals')
         @livewireScripts
+        
         {{-- JS LINK SCRIPT TO PUCLIC --}}
         <script src="{{ asset('js/main.js') }}"></script>
 

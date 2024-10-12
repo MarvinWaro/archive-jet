@@ -11,11 +11,8 @@ Route::get('/about', function () {
 })->name('about');
 
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])->group(function () {
+
     Route::get('admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
@@ -35,4 +32,10 @@ Route::middleware([
     Route::get('admin/in-progress', function () {
         return view('admin.in-progress');
     })->name('admin.in-progress');
+
+    Route::get('admin/folders', function () {
+        return view('admin.folders');
+    })->name('admin.folders');
+
+
 });
