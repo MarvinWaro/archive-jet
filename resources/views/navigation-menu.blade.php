@@ -35,8 +35,6 @@
                     <x-nav-link href="{{ route('admin.folders') }}" :active="request()->routeIs('admin.folders')">
                         {{ __('Folders') }}
                     </x-nav-link>
-
-
                 </div>
             </div>
 
