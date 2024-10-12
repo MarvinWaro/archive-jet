@@ -37,5 +37,13 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])
         return view('admin.folders');
     })->name('admin.folders');
 
+    Route::get('admin/create_folder', function () {
+        return view('admin.create_folder');
+    })->name('admin.create_folder');
+
+    Route::get('admin/edit_folder', function () {
+        return view('admin.edit_folder');
+    })->name('admin.edit_folder');
+
 
 });
