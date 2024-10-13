@@ -4,7 +4,6 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Create Folder') }}
             </h2>
-
         </div>
     </x-slot>
 
@@ -12,14 +11,14 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-5">
-                    <a href="{{ route('admin.folders') }}" class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-900">
+                    <a href="{{ route('admin.folders') }}" type="button" class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-900">
                         Back
                     </a>
-                    <section class="bg-white dark:bg-gray-900">
-                        <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+                    <section class="bg-white dark:bg-gray-900 mx-12">
+                        <div class="py-8 px-4 mx-auto max-w-xl lg:py-16">
                             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add a new Folder Name</h2>
                             <form action="{{ route('admin.store_folder') }}" method="POST">
-                                @csrf  <!-- Include CSRF token -->
+                                @csrf
                                 <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                                     <div class="sm:col-span-2">
                                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Folder Name</label>
@@ -37,4 +36,3 @@
         </div>
     </div>
 </x-app-layout>
-

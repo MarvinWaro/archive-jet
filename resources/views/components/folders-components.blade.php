@@ -1,5 +1,4 @@
-<div class="mt-6 p-6">
-
+<div class="p-6">
     {{-- <!-- Export Button -->
     <button id="export-csv-btn" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg">Export to CSV</button> --}}
 
