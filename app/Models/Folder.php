@@ -9,5 +9,6 @@ class Folder extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name']; // Allow mass assignment for the 'name' field
+    protected $fillable = ['name', 'activate', 'exclude'];
 }
+

@@ -12,9 +12,12 @@ class FolderController extends Controller
     // Display a listing of the folders
     public function index()
     {
-        $folders = Folder::all();
+        // Fetch only folders that are not excluded
+        $folders = Folder::where('exclude', 0)->get();
+
         return view('admin.folders', compact('folders'));
     }
+
 
     // Show the form for creating a new folder
     public function create()
@@ -44,17 +47,26 @@ class FolderController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        try {
+        // Check for an excluded folder to reuse
+        $folder = Folder::where('exclude', 1)->first();
+
+        if ($folder) {
+            // Reuse the excluded folder
+            $folder->update([
+                'name' => $request->name,
+                'exclude' => 0, // Reactivate it
+            ]);
+        } else {
+            // Create a new folder if no excluded one is found
             Folder::create([
                 'name' => $request->name,
             ]);
-            return redirect()->route('admin.folders')
-                ->with('success', 'Folder created successfully.');
-        } catch (\Exception $e) {
-            Log::error('Folder creation failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Folder creation failed.');
         }
+
+        return redirect()->route('admin.folders')
+            ->with('success', 'Folder saved successfully.');
     }
+
 
 
     // Show the form for editing a folder
@@ -81,12 +93,15 @@ class FolderController extends Controller
     }
 
     // Remove the folder from the database
-    public function destroy($id) // Changed to accept $id instead of Folder
+    public function destroy($id)
     {
         $folder = Folder::findOrFail($id); // Find the folder by ID
-        $folder->delete();
+        $folder->update([
+            'exclude' => 1, // Mark as excluded
+        ]);
 
         return redirect()->route('admin.folders')
-            ->with('success', 'Folder deleted successfully.');
+            ->with('success', 'Folder excluded successfully.');
     }
+
 }
