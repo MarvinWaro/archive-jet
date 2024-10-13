@@ -104,4 +104,28 @@ class FolderController extends Controller
             ->with('success', 'Folder excluded successfully.');
     }
 
+    // for mode in one form
+    // public function save(Request $request, $id = null)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //     ]);
+
+    //     if ($id) {
+    //         // Editing an existing folder
+    //         $folder = Folder::findOrFail($id);
+    //         $folder->update([
+    //             'name' => $request->name,
+    //         ]);
+    //         return redirect()->route('admin.folders')->with('success', 'Folder updated successfully.');
+    //     } else {
+    //         // Adding a new folder
+    //         Folder::create([
+    //             'name' => $request->name,
+    //         ]);
+    //         return redirect()->route('admin.folders')->with('success', 'Folder created successfully.');
+    //     }
+    // }
+
+
 }
