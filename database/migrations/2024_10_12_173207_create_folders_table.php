@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('folders', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Folder name
+            $table->string('name')->unique(); // Folder name
             $table->boolean('activate')->default(1); // Whether the folder is active
             $table->boolean('exclude')->default(0); // Whether the folder is excluded
             $table->timestamps();

@@ -45,8 +45,15 @@ class FolderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:folders,name', // Ensure name is unique in the folders table
+        ], [
+            'name.required' => 'Please enter a folder name.',
+            'name.max' => 'Folder name must not exceed 255 characters.',
+            'name.unique' => 'The folder name has already been taken.', // Custom message for uniqueness
         ]);
+
+        // Convert the folder name to uppercase
+        $folderName = strtoupper($request->name);
 
         // Check for an excluded folder to reuse
         $folder = Folder::where('exclude', 1)->first();
@@ -55,16 +62,16 @@ class FolderController extends Controller
             // Reuse the excluded folder
             $oldName = $folder->name; // Store the old name for logging
             $folder->update([
-                'name' => $request->name,
+                'name' => $folderName,
                 'exclude' => 0, // Reactivate it
             ]);
 
             // Log the activity for reusing
-            RecentActivity::create(['activity' => 'Reactivated folder from: ' . $oldName . ' to: ' . $folder->name]);
+            RecentActivity::create(['activity' => 'Added folder: ' . $folder->name]);
         } else {
             // Create a new folder if no excluded one is found
             $folder = Folder::create([
-                'name' => $request->name,
+                'name' => $folderName,
             ]);
 
             // Log the activity for adding
@@ -78,6 +85,8 @@ class FolderController extends Controller
 
 
 
+
+
     // Show the form for editing a folder
     public function edit($id) // Changed to accept $id instead of Folder
     {
@@ -85,17 +94,24 @@ class FolderController extends Controller
         return view('admin.edit_folder', compact('folder'));
     }
 
-    // Update the folder in the database
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:folders,name,' . $id, // Ensure name is unique, excluding the current folder
+        ], [
+            'name.required' => 'Please enter a folder name.',
+            'name.max' => 'Folder name must not exceed 255 characters.',
+            'name.unique' => 'The folder name has already been taken.', // Custom message for uniqueness
         ]);
 
         $folder = Folder::findOrFail($id); // Find the folder by ID
         $oldName = $folder->name; // Store the old name for logging
+
+        // Convert the folder name to uppercase
+        $folderName = strtoupper($request->name);
+
         $folder->update([
-            'name' => $request->name,
+            'name' => $folderName,
         ]);
 
         // Log the activity for editing
@@ -106,14 +122,20 @@ class FolderController extends Controller
     }
 
 
+
+
     // Remove the folder from the database
     public function destroy($id)
     {
         $folder = Folder::findOrFail($id); // Find the folder by ID
-        $folder->delete();
+
+        // Mark as excluded (soft delete)
+        $folder->update([
+            'exclude' => 1, // Mark as excluded
+        ]);
 
         // Log the activity
-        RecentActivity::create(['activity' => 'Deleted folder with ID ' . $id . ' (Name: ' . $folder->name . ')']);
+        RecentActivity::create(['activity' => 'Removed folder (Name: ' . $folder->name . ')']);
 
         return redirect()->route('admin.folders')
             ->with('success', 'Folder deleted successfully.');

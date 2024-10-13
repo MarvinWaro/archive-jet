@@ -1,5 +1,23 @@
 @include('partials._header')
 
+            <!-- Display success message if exists -->
+            @if (session('success'))
+                <div class="mb-4 p-4 text-green-700 bg-green-100 rounded-lg" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Display error messages if exists -->
+            @if ($errors->any())
+                <div class="mb-4 p-4 text-red-700 bg-red-100 rounded-lg" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
         <x-banner />
         <div class="min-h-screen bg-gray-100">
             @livewire('navigation-menu')
@@ -18,7 +36,7 @@
         </div>
         @stack('modals')
         @livewireScripts
-        
+
         {{-- JS LINK SCRIPT TO PUCLIC --}}
         <script src="{{ asset('js/main.js') }}"></script>
 
