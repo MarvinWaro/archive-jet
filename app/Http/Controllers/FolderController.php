@@ -134,7 +134,7 @@ class FolderController extends Controller
         RecentActivity::create(['activity' => 'Removed folder (Name: ' . $folder->name . ')']);
 
         return redirect()->route('admin.folders')
-            ->with('success', 'Folder deleted successfully.');
+            ->with('deleted', 'Folder deleted successfully.');
     }
 
 

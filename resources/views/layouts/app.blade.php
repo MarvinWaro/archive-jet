@@ -1,11 +1,47 @@
 @include('partials._header')
 
-            <!-- Display success message if exists -->
             @if (session('success'))
-                <div class="mb-4 p-4 text-green-700 bg-green-100 rounded-lg" role="alert">
-                    {{ session('success') }}
-                </div>
+                <script>
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-right',
+                        iconColor: 'white',
+                        customClass: {
+                            popup: 'colored-toast',
+                        },
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: "{{ session('success') }}",
+                    });
+                </script>
             @endif
+
+            @if (session('deleted'))
+                <script>
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-right',
+                        iconColor: 'white',
+                        customClass: {
+                            popup: 'colored-toast',
+                        },
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                    Toast.fire({
+                        icon: 'error', // Change this to 'error' for the trashcan icon
+                        title: "{{ session('deleted') }}",
+                        background: '#f44336', // Set the background color to red
+                        iconHtml: '<i class="fas fa-trash-alt" style="color: white;"></i>', // Custom HTML for the trashcan icon
+                    });
+                </script>
+            @endif
+
 
             <!-- Display error messages if exists -->
             @if ($errors->any())
