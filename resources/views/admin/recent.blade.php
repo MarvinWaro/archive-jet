@@ -29,7 +29,7 @@
                             </li>
                         @endforeach
                     </ol>
-                </div>
+                </div> 
             @endforeach
         </div>
     </div>
