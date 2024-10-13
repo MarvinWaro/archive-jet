@@ -53,17 +53,24 @@
                     <div id="dropdown-{{ $folder->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-eye me-2"></i>View</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <i class="fa-solid fa-eye me-2"></i>View
+                                </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.edit_folder', $folder->id) }}" type="button" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                <a href="{{ route('admin.edit_folder', $folder->id) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <i class="fa-solid fa-pen-to-square me-2"></i>Edit
+                                </a>
                             </li>
                             <hr class="w-[90%] mx-auto">
                             <li>
                                 <form action="{{ route('admin.destroy_folder', $folder->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this folder?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-500"><i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span></button>
+                                    <!-- Make the button look like a link -->
+                                    <button type="submit" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-500">
+                                        <i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span>
+                                    </button>
                                 </form>
                             </li>
                         </ul>
