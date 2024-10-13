@@ -42,7 +42,7 @@ class FolderController extends Controller
     // }
 
 
-    public function store(Request $request)
+        public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:folders,name', // Ensure name is unique in the folders table
@@ -81,10 +81,6 @@ class FolderController extends Controller
         return redirect()->route('admin.folders')
             ->with('success', 'Folder saved successfully.');
     }
-
-
-
-
 
 
     // Show the form for editing a folder
@@ -140,6 +136,8 @@ class FolderController extends Controller
         return redirect()->route('admin.folders')
             ->with('success', 'Folder deleted successfully.');
     }
+
+
 
 
     // for mode in one form
