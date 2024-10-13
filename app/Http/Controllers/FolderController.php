@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\RecentActivity; // Add this at the top
 
 
 class FolderController extends Controller
@@ -52,20 +53,28 @@ class FolderController extends Controller
 
         if ($folder) {
             // Reuse the excluded folder
+            $oldName = $folder->name; // Store the old name for logging
             $folder->update([
                 'name' => $request->name,
                 'exclude' => 0, // Reactivate it
             ]);
+
+            // Log the activity for reusing
+            RecentActivity::create(['activity' => 'Reactivated folder from: ' . $oldName . ' to: ' . $folder->name]);
         } else {
             // Create a new folder if no excluded one is found
-            Folder::create([
+            $folder = Folder::create([
                 'name' => $request->name,
             ]);
+
+            // Log the activity for adding
+            RecentActivity::create(['activity' => 'Added folder: ' . $folder->name]);
         }
 
         return redirect()->route('admin.folders')
             ->with('success', 'Folder saved successfully.');
     }
+
 
 
 
@@ -77,32 +86,39 @@ class FolderController extends Controller
     }
 
     // Update the folder in the database
-    public function update(Request $request, $id) // Changed to accept $id instead of Folder
+    public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
         $folder = Folder::findOrFail($id); // Find the folder by ID
+        $oldName = $folder->name; // Store the old name for logging
         $folder->update([
             'name' => $request->name,
         ]);
+
+        // Log the activity for editing
+        RecentActivity::create(['activity' => 'Edited folder from: ' . $oldName . ' to: ' . $folder->name]);
 
         return redirect()->route('admin.folders')
             ->with('success', 'Folder updated successfully.');
     }
 
+
     // Remove the folder from the database
     public function destroy($id)
     {
         $folder = Folder::findOrFail($id); // Find the folder by ID
-        $folder->update([
-            'exclude' => 1, // Mark as excluded
-        ]);
+        $folder->delete();
+
+        // Log the activity
+        RecentActivity::create(['activity' => 'Deleted folder with ID ' . $id . ' (Name: ' . $folder->name . ')']);
 
         return redirect()->route('admin.folders')
-            ->with('success', 'Folder excluded successfully.');
+            ->with('success', 'Folder deleted successfully.');
     }
+
 
     // for mode in one form
     // public function save(Request $request, $id = null)
@@ -126,6 +142,14 @@ class FolderController extends Controller
     //         return redirect()->route('admin.folders')->with('success', 'Folder created successfully.');
     //     }
     // }
+
+
+
+    public function recentActivities()
+    {
+        $activities = RecentActivity::orderBy('created_at', 'desc')->get(); // Get recent activities
+        return view('admin.recent', compact('activities')); // Pass activities to view
+    }
 
 
 }

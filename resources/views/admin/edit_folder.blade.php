@@ -15,7 +15,7 @@
                         Back
                     </a>
                     <section class="bg-white dark:bg-gray-900">
-                        <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+                        <div class="py-8 px-4 mx-auto max-w-xl lg:py-16">
                             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Update Folder Name</h2>
                             <form action="{{ route('admin.update_folder', $folder->id) }}" method="POST"> <!-- Set action to update route -->
                                 @csrf

@@ -35,6 +35,10 @@
                     <x-nav-link href="{{ route('admin.folders') }}" :active="request()->routeIs('admin.folders')">
                         {{ __('Folders') }}
                     </x-nav-link>
+
+                    {{-- <x-nav-link href="{{ route('admin.recent') }}" :active="request()->routeIs('admin.recent')">
+                        {{ __('Recent Activities') }}
+                    </x-nav-link> --}}
                 </div>
             </div>
 
@@ -133,6 +137,10 @@
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ route('admin.recent') }}">
+                                {{ __('Recent Activities') }}
                             </x-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
