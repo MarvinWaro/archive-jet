@@ -179,3 +179,20 @@ SCRIPT IN EXPORRT
     }
 
 </script> --}}
+
+
+
+
+Route
+
+
+    // Admin folder routes
+    // Route::get('admin/folders/create', [FolderController::class, 'create'])->name('admin.create_folder');
+    // Route::post('admin/folders', [FolderController::class, 'store'])->name('admin.store_folder');
+    // Route::get('admin/folders/{id}/edit', [FolderController::class, 'edit'])->name('admin.edit_folder');
+    // Route::put('admin/folders/{id}', [FolderController::class, 'update'])->name('admin.update_folder');
+    // Route::delete('admin/folders/{id}', [FolderController::class, 'destroy'])->name('admin.destroy_folder');
+    // Route::get('admin/folders', [FolderController::class, 'index'])->name('admin.folders');
+
+
+    

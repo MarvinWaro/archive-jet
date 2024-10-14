@@ -10,5 +10,9 @@ class Folder extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'activate', 'exclude'];
+
+    public function products(){
+        return $this->hasMany(Record::class, 'folder_id', 'id');
+    }
 }
 
