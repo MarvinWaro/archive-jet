@@ -18,6 +18,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
+    Route::get('admin/dashboard_create_record', function () {
+        return view('admin.dashboard_create_record');
+    })->name('admin.dashboard_create_record');
+
+    Route::get('admin/dashboard_edit_record', function () {
+        return view('admin.dashboard_edit_record');
+    })->name('admin.dashboard_edit_record');
+
     Route::get('admin/acic', function () {
         return view('admin.acic');
     })->name('admin.acic');
