@@ -6,6 +6,7 @@ use App\Models\Folder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\RecentActivity; // Add this at the top
+use App\Models\Record;
 
 
 class FolderController extends Controller
@@ -105,22 +106,56 @@ class FolderController extends Controller
 
 
     // Remove the folder from the database (soft delete)
+    // public function destroy($id)
+    // {
+    //     $folder = Folder::findOrFail($id); // Find the folder by ID
+
+    //     // Get all records associated with this folder
+    //     $records = $folder->products; // Assuming the relationship in the Folder model is 'products'
+
+    //     // If you want to soft delete records, loop through and set their 'exclude' property
+    //     foreach ($records as $record) {
+    //         $record->update(['exclude' => 1, 'activate' => 0]); // Update as needed
+    //     }
+
+    //     // Now delete the folder
+    //     $folder->delete();
+
+    //     // Log the activity
+    //     RecentActivity::create(['activity' => 'Permanently deleted folder (Name: ' . $folder->name . ')']);
+
+    //     return redirect()->route('admin.folders')
+    //         ->with('deleted', 'Folder and associated records deleted successfully.');
+    // }
+
+
+// Remove the folder from the database (soft delete)
     public function destroy($id)
     {
         $folder = Folder::findOrFail($id); // Find the folder by ID
 
-        // Mark as excluded (soft delete) and set activate to 0
+        // Mark the folder as excluded (soft delete) and set activate to 0
         $folder->update([
             'exclude' => 1, // Mark as excluded
             'activate' => 0, // Deactivate the folder
         ]);
 
+        // Update related records in the records table
+        Record::where('folder_id', $folder->id)->update([
+            'exclude' => 1, // Mark related records as excluded
+            'activate' => 0, // Deactivate the related records
+        ]);
+
         // Log the activity
-        RecentActivity::create(['activity' => 'Removed folder (Name: ' . $folder->name . ')']);
+        RecentActivity::create(['activity' => 'Removed folder (Name: ' . $folder->name . ') and its related records.']);
 
         return redirect()->route('admin.folders')
             ->with('deleted', 'Folder deleted successfully.');
     }
+
+
+
+
 
 
     public function recentActivities()

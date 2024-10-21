@@ -17,8 +17,10 @@ return new class extends Migration
             $table->boolean('activate')->default(1); // Whether the folder is active
             $table->boolean('exclude')->default(0); // Whether the folder is excluded
             $table->timestamps();
+            $table->softDeletes(); // Adds deleted_at column
         });
     }
+
 
 
     public function down()
