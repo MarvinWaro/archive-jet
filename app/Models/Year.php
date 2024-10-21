@@ -11,4 +11,9 @@ class Year extends Model
 {
     protected $fillable = ['year'];
 
+
+    public function records()
+    {
+        return $this->hasMany(Record::class, 'year_id', 'id');
+    }
 }

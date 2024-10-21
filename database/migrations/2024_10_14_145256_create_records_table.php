@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('year_id')->constrained('years')->onDelete('cascade'); // Foreign key to years table
+            $table->foreignId('year_id')->constrained('years')->onDelete('cascade'); // FK from years
             $table->string('month'); // Month as a string or int (e.g., 'January', '02')
-            $table->foreignId('folder_id')->constrained('folders')->onDelete('cascade'); // Foreign key to folders table
-            $table->string('folder_type'); // Folder type (e.g., ACIC, MDS)
-            $table->text('folder_description'); // Folder description
-            $table->foreignId('submission_year_id')->constrained('submission_years')->onDelete('cascade'); // Foreign key to submission_years table
+            $table->string('folder_id'); // Folder name
+            $table->string('folder_type'); // Folder type
+            $table->longText('folder_description'); // Alpha-numeric number
+            $table->foreignId('submission_year_id')->constrained('submission_years')->onDelete('cascade'); // FK from submission_years
             $table->string('submission_month'); // Submission month
-            $table->enum('status', ['completed', 'in-progress']); // Record status
-            $table->string('others')->nullable(); // Optional field for other details
-            $table->text('remarks')->nullable(); // Remarks or comments
-            $table->timestamps();
+            $table->string('status'); // Status (e.g., In-Progress, Completed)
+            $table->string('others'); // Others field
+            $table->text('remarks')->nullable(); // Remarks field
+            $table->timestamps(); // Created_at and updated_at fields
         });
     }
 

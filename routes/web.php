@@ -49,8 +49,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('admin/dashboard', 'index')->name('admin.dashboard');
         Route::get('admin/records/create', 'create')->name('admin.dashboard_create_record');
         Route::post('admin/records', 'store')->name('admin.dashboard_store'); // Store new record
-        // Other routes...
+
+        // Edit route
+        Route::get('admin/records/{id}/edit', 'edit')->name('admin.dashboard_edit_record'); // Edit record
+        Route::put('admin/records/{id}', 'update')->name('admin.dashboard_update'); // Update record
     });
+
 
 
 

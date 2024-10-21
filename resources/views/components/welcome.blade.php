@@ -191,30 +191,42 @@
                                 <a href="#!" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-eye me-2"></i>View</a>
                             </li>
                             <li>
-                                <a href="#!" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                <a href="{{ route('admin.dashboard_edit_record', $record->id) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <i class="fa-solid fa-pen-to-square me-2"></i>Edit
+                                </a>
                             </li>
                             <hr class="w-[90%] mx-auto">
                             <li>
                                 <form action="#!" method="POST" class="block px-4 py-2">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-trash me-2"></i>Delete</button>
+                                    <button type="submit" class="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span>
+                                    </button>
                                 </form>
                             </li>
                         </ul>
                     </div>
                 </td>
-                <td>{{ $record->created_at->format('Y-m-d') }}</td>
-                <td>{{ $record->folder->name }}</td>
-                <td>{{ $record->folder_type }}</td>
+                <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $record->month)->format('F')) }}, {{ strtoupper($record->Year->year) }}</td>
+                <td>{{ strtoupper($record->folder->name) }}</td> <!-- Uppercase for Folder Name -->
+                <td>{{ strtoupper($record->folder_type) }}</td> <!-- Uppercase for Folder Type -->
                 <td>{{ $record->folder_description }}</td>
-                <td>{{ $record->submission_month }} {{ $record->submission_year_id }}</td>
+                <!-- Submission Date: Month (formatted as capitalized name) and Year -->
+                <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $record->submission_month)->format('F')) }}, {{ strtoupper($record->submissionYear->year) }}</td>
                 <td>{{ $record->others }}</td>
                 <td>{{ $record->remarks }}</td>
-                <td>{{ $record->status }}</td>
+                <td class="{{ strtoupper($record->status) === 'IN_PROGRESS' ? 'text-orange-500' : (strtoupper($record->status) === 'COMPLETED' ? 'text-green-500' : 'text-gray-900') }}">
+                    {{ strtoupper(str_replace('_', '-', $record->status)) }}
+                </td>
+
+
+
             </tr>
             @endforeach
         </tbody>
+
+
 
 
 
