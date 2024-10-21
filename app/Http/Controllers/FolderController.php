@@ -13,11 +13,12 @@ class FolderController extends Controller
     // Display a listing of the folders
     public function index()
     {
-        // Fetch only folders that are not excluded
-        $folders = Folder::where('exclude', 0)->get();
+        // Fetch only folders that are not excluded and are active
+        $folders = Folder::where('exclude', 0)->where('activate', 1)->get();
 
         return view('admin.folders', compact('folders'));
     }
+
 
 
     // Show the form for creating a new folder
@@ -26,23 +27,7 @@ class FolderController extends Controller
         return view('admin.create_folder');
     }
 
-    // Store a newly created folder in the database
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //     ]);
-
-    //     Folder::create([
-    //         'name' => $request->name,
-    //     ]);
-
-    //     return redirect()->route('admin.folders')
-    //         ->with('success', 'Folder created successfully.');
-    // }
-
-
-        public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:folders,name', // Ensure name is unique in the folders table
@@ -60,21 +45,22 @@ class FolderController extends Controller
 
         if ($folder) {
             // Reuse the excluded folder
-            $oldName = $folder->name; // Store the old name for logging
             $folder->update([
                 'name' => $folderName,
-                'exclude' => 0, // Reactivate it
+                'exclude' => 0, // Reactivate the folder
+                'activate' => 1, // Ensure the folder is active again
             ]);
 
-            // Log the activity for reusing
-            RecentActivity::create(['activity' => 'Added folder: ' . $folder->name]);
+            // Log the activity
+            RecentActivity::create(['activity' => 'Reused folder: ' . $folder->name]);
         } else {
             // Create a new folder if no excluded one is found
             $folder = Folder::create([
                 'name' => $folderName,
+                'activate' => 1, // New folders should be active by default
             ]);
 
-            // Log the activity for adding
+            // Log the activity
             RecentActivity::create(['activity' => 'Added folder: ' . $folder->name]);
         }
 
@@ -118,16 +104,15 @@ class FolderController extends Controller
     }
 
 
-
-
-    // Remove the folder from the database
+    // Remove the folder from the database (soft delete)
     public function destroy($id)
     {
         $folder = Folder::findOrFail($id); // Find the folder by ID
 
-        // Mark as excluded (soft delete)
+        // Mark as excluded (soft delete) and set activate to 0
         $folder->update([
             'exclude' => 1, // Mark as excluded
+            'activate' => 0, // Deactivate the folder
         ]);
 
         // Log the activity
@@ -136,33 +121,6 @@ class FolderController extends Controller
         return redirect()->route('admin.folders')
             ->with('deleted', 'Folder deleted successfully.');
     }
-
-
-
-
-    // for mode in one form
-    // public function save(Request $request, $id = null)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //     ]);
-
-    //     if ($id) {
-    //         // Editing an existing folder
-    //         $folder = Folder::findOrFail($id);
-    //         $folder->update([
-    //             'name' => $request->name,
-    //         ]);
-    //         return redirect()->route('admin.folders')->with('success', 'Folder updated successfully.');
-    //     } else {
-    //         // Adding a new folder
-    //         Folder::create([
-    //             'name' => $request->name,
-    //         ]);
-    //         return redirect()->route('admin.folders')->with('success', 'Folder created successfully.');
-    //     }
-    // }
-
 
 
     public function recentActivities()
