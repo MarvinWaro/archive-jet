@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FolderController; // Ensure this is present
+use App\Http\Controllers\RecordController;
 
 Route::get('/', function () {
     return view('record-landing');
@@ -13,18 +14,6 @@ Route::get('/about', function () {
 
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-
-    Route::get('admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-    Route::get('admin/dashboard_create_record', function () {
-        return view('admin.dashboard_create_record');
-    })->name('admin.dashboard_create_record');
-
-    Route::get('admin/dashboard_edit_record', function () {
-        return view('admin.dashboard_edit_record');
-    })->name('admin.dashboard_edit_record');
 
     Route::get('admin/acic', function () {
         return view('admin.acic');
@@ -42,13 +31,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         return view('admin.in-progress');
     })->name('admin.in-progress');
 
-    // Admin folder routes
-    // Route::get('admin/folders/create', [FolderController::class, 'create'])->name('admin.create_folder');
-    // Route::post('admin/folders', [FolderController::class, 'store'])->name('admin.store_folder');
-    // Route::get('admin/folders/{id}/edit', [FolderController::class, 'edit'])->name('admin.edit_folder');
-    // Route::put('admin/folders/{id}', [FolderController::class, 'update'])->name('admin.update_folder');
-    // Route::delete('admin/folders/{id}', [FolderController::class, 'destroy'])->name('admin.destroy_folder');
-    // Route::get('admin/folders', [FolderController::class, 'index'])->name('admin.folders');
 
     Route::resource('admin/folders', FolderController::class)->names([
         'index' => 'admin.folders',
@@ -61,6 +43,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
 
     Route::get('admin/recent', [FolderController::class, 'recentActivities'])->name('admin.recent');
+
+
+    Route::controller(RecordController::class)->group(function() {
+        Route::get('admin/dashboard', 'index')->name('admin.dashboard');
+        Route::get('admin/records/create', 'create')->name('admin.dashboard_create_record');
+        Route::post('admin/records', 'store')->name('admin.dashboard_store'); // Store new record
+
+        // Edit route
+        Route::get('admin/records/{id}/edit', 'edit')->name('admin.dashboard_edit_record'); // Edit record
+        Route::put('admin/records/{id}', 'update')->name('admin.dashboard_update'); // Update record
+    });
+
 
 
 

@@ -175,75 +175,60 @@
             </tr>
         </thead>
         <tbody>
+            @foreach($records as $record)
             <tr>
                 <td>
-                    <button id="dropdownDefaultButton-100" data-dropdown-toggle="dropdown-100" class="text-gray-800 bg-transparent border border-gray-300 hover:text-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-transparent dark:border-gray-600 dark:text-gray-300 dark:hover:text-gray-400 dark:focus:ring-gray-800" type="button">Action
+                    <button id="dropdownDefaultButton-{{ $record->id }}" data-dropdown-toggle="dropdown-{{ $record->id }}" class="text-gray-800 bg-transparent border border-gray-300 hover:text-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-transparent dark:border-gray-600 dark:text-gray-300 dark:hover:text-gray-400 dark:focus:ring-gray-800" type="button">Action
                         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                         </svg>
                     </button>
 
                     <!-- Dropdown menu -->
-                    <div id="dropdown-100" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                    <div id="dropdown-{{ $record->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton-{{ $record->id }}">
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-eye me-2"></i>View</a>
+                                <a href="#!" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-eye me-2"></i>View</a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.dashboard_edit_record') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                <a href="{{ route('admin.dashboard_edit_record', $record->id) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <i class="fa-solid fa-pen-to-square me-2"></i>Edit
+                                </a>
                             </li>
                             <hr class="w-[90%] mx-auto">
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-500"><i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span></a>
+                                <form action="#!" method="POST" class="block px-4 py-2">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span>
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>
                 </td>
-                <td>January, 2024</td>
-                <td>ACIC 101</td>
-                <td>ACIC NUMBER</td>
-                <td>1-12-023-15215-352</td>
-                <td>March 2023</td>
-                <td>Folder #1</td>
-                <td>RD, DONE</td>
-                <td class="text-green-600 font-bold">COMPLETED</td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="dropdownDefaultButton-200" data-dropdown-toggle="dropdown-200" class="text-gray-800 bg-transparent border border-gray-300 hover:text-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-transparent dark:border-gray-600 dark:text-gray-300 dark:hover:text-gray-400 dark:focus:ring-gray-800" type="button">Action
-                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
-                    </button>
-
-                    <!-- Dropdown menu -->
-                    <div id="dropdown-200" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-eye me-2"></i>View</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.dashboard_edit_record') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
-                            </li>
-                            <hr class="w-[90%] mx-auto">
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-500"><i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span></a>
-                            </li>
-                        </ul>
-                    </div>
+                <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $record->month)->format('F')) }}, {{ strtoupper($record->Year->year) }}</td>
+                <td>{{ strtoupper($record->folder->name) }}</td> <!-- Uppercase for Folder Name -->
+                <td>{{ strtoupper($record->folder_type) }}</td> <!-- Uppercase for Folder Type -->
+                <td>{{ $record->folder_description }}</td>
+                <!-- Submission Date: Month (formatted as capitalized name) and Year -->
+                <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $record->submission_month)->format('F')) }}, {{ strtoupper($record->submissionYear->year) }}</td>
+                <td>{{ $record->others }}</td>
+                <td>{{ $record->remarks }}</td>
+                <td class="{{ strtoupper($record->status) === 'IN_PROGRESS' ? 'text-orange-500' : (strtoupper($record->status) === 'COMPLETED' ? 'text-green-500' : 'text-gray-900') }}">
+                    {{ strtoupper(str_replace('_', '-', $record->status)) }}
                 </td>
-                <td>December, 2023</td>
-                <td>MDS 101</td>
-                <td>CHECK NUMBER</td>
-                <td>012-12-023-15215-125-12366-456</td>
-                <td>March 2024</td>
-                <td>Folder #2</td>
-                <td>M, JL, DONE</td>
-                <td class="text-orange-600 font-bold">IN-PROGRESS</td>
-            </tr>
 
+
+
+            </tr>
+            @endforeach
         </tbody>
-    </table>
+
+
+
+
 
 
 </div>
