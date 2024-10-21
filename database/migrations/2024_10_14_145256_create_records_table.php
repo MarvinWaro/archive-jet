@@ -13,19 +13,21 @@ return new class extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('year_id')->constrained('years')->onDelete('cascade'); // FK from years
-            $table->string('month'); // Month as a string or int (e.g., 'January', '02')
-            $table->string('folder_id'); // Folder name
-            $table->string('folder_type'); // Folder type
-            $table->longText('folder_description'); // Alpha-numeric number
-            $table->foreignId('submission_year_id')->constrained('submission_years')->onDelete('cascade'); // FK from submission_years
-            $table->string('submission_month'); // Submission month
-            $table->string('status'); // Status (e.g., In-Progress, Completed)
-            $table->string('others'); // Others field
-            $table->text('remarks')->nullable(); // Remarks field
-            $table->timestamps(); // Created_at and updated_at fields
+            $table->foreignId('year_id')->constrained('years')->onDelete('cascade');
+            $table->string('month');
+            $table->foreignId('folder_id')->constrained('folders')->onDelete('cascade'); // Corrected this to foreignId for folder_id
+            $table->string('folder_type');
+            $table->longText('folder_description');
+            $table->foreignId('submission_year_id')->constrained('submission_years')->onDelete('cascade');
+            $table->string('submission_month');
+            $table->string('status');
+            $table->string('others');
+            $table->text('remarks')->nullable();
+            $table->timestamps();
+            $table->softDeletes(); // Adds deleted_at column
         });
     }
+
 
     public function down()
     {

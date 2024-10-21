@@ -13,12 +13,20 @@ class RecordController extends Controller
 
     public function index() {
         // Get the records with eager loading of year and submission year
-        $records = Record::with(['year', 'submissionYear'])->get();
+        $records = Record::with(['year', 'submissionYear'])
+            ->where('exclude', 0) // Only include records that are not excluded
+            ->where('activate', 1) // Only include records that are active
+            ->get();
 
+        // Fetch folders that are not excluded and are active
         $folders = Folder::where('exclude', 0)->where('activate', 1)->get();
-        // Pass the records and counts to the view
+
+        // Pass the records and folders to the view
         return view("admin.dashboard", compact('records', 'folders'));
     }
+
+
+
 
 
     public function create() {
