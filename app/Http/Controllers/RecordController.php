@@ -29,6 +29,7 @@ class RecordController extends Controller
 
 
 
+
     public function create() {
         $years = Year::orderBy('year', 'desc')->get(); // Fetch years in descending order
         $submission_years = SubmissionYear::orderBy('year', 'desc')->get(); // Fetch submission years in descending order
@@ -64,28 +65,51 @@ class RecordController extends Controller
             'others.required' => 'The "Others" field is required.',
         ]);
 
-        // Save the record
-        $record = new Record();
-        $record->year_id = $request->year_id;
-        $record->month = $request->month;
-        $record->folder_id = $request->folder_id;
-        $record->folder_type = $request->folder_type;
-        $record->folder_description = $request->folder_description;
-        $record->submission_year_id = $request->submission_year_id;
-        $record->submission_month = $request->submission_month;
-        $record->status = $request->status;
-        $record->others = $request->others;
+        // Check for excluded record to reuse its ID
+        $record = Record::where('exclude', 1)->first();
 
-        // Save remarks if present
-        if ($request->filled('remarks')) {
-            $record->remarks = $request->remarks;
+        if ($record) {
+            // Reuse the excluded record by updating it
+            $record->update([
+                'year_id' => $request->year_id,
+                'month' => $request->month,
+                'folder_id' => $request->folder_id,
+                'folder_type' => $request->folder_type,
+                'folder_description' => $request->folder_description,
+                'submission_year_id' => $request->submission_year_id,
+                'submission_month' => $request->submission_month,
+                'status' => $request->status,
+                'others' => $request->others,
+                'remarks' => $request->remarks,
+                'exclude' => 0, // Mark as active
+                'activate' => 1, // Ensure the record is active again
+            ]);
+        } else {
+            // Create a new record if no excluded one is found
+            $record = new Record();
+            $record->year_id = $request->year_id;
+            $record->month = $request->month;
+            $record->folder_id = $request->folder_id;
+            $record->folder_type = $request->folder_type;
+            $record->folder_description = $request->folder_description;
+            $record->submission_year_id = $request->submission_year_id;
+            $record->submission_month = $request->submission_month;
+            $record->status = $request->status;
+            $record->others = $request->others;
+
+            // Save remarks if present
+            if ($request->filled('remarks')) {
+                $record->remarks = $request->remarks;
+            }
+
+            $record->save();
         }
-
-        $record->save();
 
         // Redirect with success message
         return redirect('admin/dashboard')->with('message', 'Record Created Successfully');
     }
+
+
 
 
 
@@ -152,12 +176,16 @@ class RecordController extends Controller
         // Find the record by ID
         $record = Record::findOrFail($id);
 
-        // Delete the record
-        $record->delete();
+        // Mark the record as excluded (soft delete) and set activate to 0
+        $record->update([
+            'exclude' => 1, // Mark as excluded
+            'activate' => 0, // Deactivate the record
+        ]);
 
         // Redirect back to the dashboard with a success message
         return redirect()->route('admin.dashboard')->with('message', 'Record Deleted Successfully');
     }
+
 
 
 
