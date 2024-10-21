@@ -63,11 +63,11 @@
                             </li>
                             <hr class="w-[90%] mx-auto">
                             <li>
-                                <form action="{{ route('admin.destroy_folder', $folder->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this folder?');">
+                                <form action="{{ route('admin.destroy_folder', $folder->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this folder?');" class="block m-0 p-0">
                                     @csrf
                                     @method('DELETE')
-                                    <!-- Make the button look like a link -->
-                                    <button type="submit" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-500">
+                                    <!-- Button styled to behave like a link -->
+                                    <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center focus:outline-none">
                                         <i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span>
                                     </button>
                                 </form>

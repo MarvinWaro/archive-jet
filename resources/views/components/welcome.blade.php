@@ -206,10 +206,10 @@
                             </li>
                             <hr class="w-[90%] mx-auto">
                             <li>
-                                <form action="{{ route('admin.dashboard_delete_record', $record->id) }}" method="POST" class="block px-4 py-2">
+                                <form action="{{ route('admin.dashboard_delete_record', $record->id) }}" method="POST" class="block m-0 p-0">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center focus:outline-none">
                                         <i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span>
                                     </button>
                                 </form>

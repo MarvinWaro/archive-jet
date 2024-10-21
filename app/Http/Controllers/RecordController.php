@@ -6,6 +6,7 @@ use App\Models\Record;
 use App\Models\Year;
 use App\Models\SubmissionYear;
 use App\Models\Folder;
+use App\Models\RecentActivity; // Add this at the top
 use Illuminate\Http\Request;
 
 class RecordController extends Controller
@@ -25,11 +26,6 @@ class RecordController extends Controller
         return view("admin.dashboard", compact('records', 'folders'));
     }
 
-
-
-
-
-
     public function create() {
         $years = Year::orderBy('year', 'desc')->get(); // Fetch years in descending order
         $submission_years = SubmissionYear::orderBy('year', 'desc')->get(); // Fetch submission years in descending order
@@ -37,7 +33,6 @@ class RecordController extends Controller
 
         return view('admin.dashboard_create_record', compact('years', 'submission_years', 'folders'));
     }
-
 
     // Store a newly created record in storage
     public function store(Request $request) {
@@ -84,34 +79,31 @@ class RecordController extends Controller
                 'exclude' => 0, // Mark as active
                 'activate' => 1, // Ensure the record is active again
             ]);
+
+            // Log the activity for reusing a record
+            RecentActivity::create(['activity' => 'Added new record in records table: ' . $record->folder->name]);
         } else {
             // Create a new record if no excluded one is found
-            $record = new Record();
-            $record->year_id = $request->year_id;
-            $record->month = $request->month;
-            $record->folder_id = $request->folder_id;
-            $record->folder_type = $request->folder_type;
-            $record->folder_description = $request->folder_description;
-            $record->submission_year_id = $request->submission_year_id;
-            $record->submission_month = $request->submission_month;
-            $record->status = $request->status;
-            $record->others = $request->others;
+            $record = Record::create([
+                'year_id' => $request->year_id,
+                'month' => $request->month,
+                'folder_id' => $request->folder_id,
+                'folder_type' => $request->folder_type,
+                'folder_description' => $request->folder_description,
+                'submission_year_id' => $request->submission_year_id,
+                'submission_month' => $request->submission_month,
+                'status' => $request->status,
+                'others' => $request->others,
+                'remarks' => $request->remarks,
+            ]);
 
-            // Save remarks if present
-            if ($request->filled('remarks')) {
-                $record->remarks = $request->remarks;
-            }
-
-            $record->save();
+            // Log the activity for creating a new record
+            RecentActivity::create(['activity' => 'Added new record in records table: ' . $record->folder->name]);
         }
 
         // Redirect with success message
         return redirect('admin/dashboard')->with('message', 'Record Created Successfully');
     }
-
-
-
-
 
     // Edit method - show the form for editing the record
     public function edit($id)
@@ -128,7 +120,6 @@ class RecordController extends Controller
         return view('admin.dashboard_edit_record', compact('record', 'years', 'submission_years', 'folders'));
     }
 
-
     // Update method - save the updated record to the database
     public function update(Request $request, $id) {
         $request->validate([
@@ -139,7 +130,7 @@ class RecordController extends Controller
             'folder_description' => 'required|string',
             'submission_year_id' => 'required|integer|exists:submission_years,id',
             'submission_month' => 'required|string|in:01,02,03,04,05,06,07,08,09,10,11,12',
-            'status' => 'required|string|in:in_progress,completed', // This line matches the values in your form
+            'status' => 'required|string|in:in_progress,completed',
             'others' => 'required|string',
             'remarks' => 'nullable|string',
         ], [
@@ -154,27 +145,35 @@ class RecordController extends Controller
             'others.required' => 'The "Others" field is required.',
         ]);
 
-
+        // Find the existing record by ID
         $record = Record::findOrFail($id);
-        $record->year_id = $request->year_id;
-        $record->month = $request->month;
-        $record->folder_id = $request->folder_id;
-        $record->folder_type = $request->folder_type;
-        $record->folder_description = $request->folder_description;
-        $record->submission_year_id = $request->submission_year_id;
-        $record->submission_month = $request->submission_month;
-        $record->status = $request->status;
-        $record->others = $request->others;
-        $record->remarks = $request->remarks;
+        $oldFolder = $record->folder->name; // Store the old folder name for logging
 
-        $record->save();
+        // Update the record with the new data
+        $record->update([
+            'year_id' => $request->year_id,
+            'month' => $request->month,
+            'folder_id' => $request->folder_id,
+            'folder_type' => $request->folder_type,
+            'folder_description' => $request->folder_description,
+            'submission_year_id' => $request->submission_year_id,
+            'submission_month' => $request->submission_month,
+            'status' => $request->status,
+            'others' => $request->others,
+            'remarks' => $request->remarks,
+        ]);
+
+        // Log the activity for editing the record
+        RecentActivity::create(['activity' => 'Edited record in from records table: ' . $oldFolder]);
 
         return redirect()->route('admin.dashboard')->with('message', 'Record Updated Successfully');
     }
 
+
     public function destroy($id) {
         // Find the record by ID
         $record = Record::findOrFail($id);
+        $folderName = $record->folder->name;
 
         // Mark the record as excluded (soft delete) and set activate to 0
         $record->update([
@@ -182,10 +181,13 @@ class RecordController extends Controller
             'activate' => 0, // Deactivate the record
         ]);
 
+        RecentActivity::create([
+            'activity' => 'Removed record on Record Table: ' . $folderName . ' with folder description: ' . $record->folder_description,
+        ]);
+
         // Redirect back to the dashboard with a success message
         return redirect()->route('admin.dashboard')->with('message', 'Record Deleted Successfully');
     }
-
 
 
 

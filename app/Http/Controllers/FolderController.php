@@ -53,7 +53,7 @@ class FolderController extends Controller
             ]);
 
             // Log the activity
-            RecentActivity::create(['activity' => 'Reused folder: ' . $folder->name]);
+            RecentActivity::create(['activity' => 'Added folder: ' . $folder->name]);
         } else {
             // Create a new folder if no excluded one is found
             $folder = Folder::create([
@@ -105,30 +105,6 @@ class FolderController extends Controller
     }
 
 
-    // Remove the folder from the database (soft delete)
-    // public function destroy($id)
-    // {
-    //     $folder = Folder::findOrFail($id); // Find the folder by ID
-
-    //     // Get all records associated with this folder
-    //     $records = $folder->products; // Assuming the relationship in the Folder model is 'products'
-
-    //     // If you want to soft delete records, loop through and set their 'exclude' property
-    //     foreach ($records as $record) {
-    //         $record->update(['exclude' => 1, 'activate' => 0]); // Update as needed
-    //     }
-
-    //     // Now delete the folder
-    //     $folder->delete();
-
-    //     // Log the activity
-    //     RecentActivity::create(['activity' => 'Permanently deleted folder (Name: ' . $folder->name . ')']);
-
-    //     return redirect()->route('admin.folders')
-    //         ->with('deleted', 'Folder and associated records deleted successfully.');
-    // }
-
-
 // Remove the folder from the database (soft delete)
     public function destroy($id)
     {
@@ -152,8 +128,6 @@ class FolderController extends Controller
         return redirect()->route('admin.folders')
             ->with('deleted', 'Folder deleted successfully.');
     }
-
-
 
 
 

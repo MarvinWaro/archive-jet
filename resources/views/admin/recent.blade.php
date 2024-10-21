@@ -9,7 +9,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
+            <!-- Loop through all activities grouped by date -->
             @foreach($activities->groupBy(function($activity) {
                 return $activity->created_at->format('Y-m-d'); // Group by date
             }) as $date => $activitiesForDate)
@@ -29,9 +29,8 @@
                             </li>
                         @endforeach
                     </ol>
-                </div> 
+                </div>
             @endforeach
         </div>
     </div>
 </x-app-layout>
-
