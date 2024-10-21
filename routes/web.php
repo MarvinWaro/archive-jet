@@ -53,6 +53,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         // Edit route
         Route::get('admin/records/{id}/edit', 'edit')->name('admin.dashboard_edit_record'); // Edit record
         Route::put('admin/records/{id}', 'update')->name('admin.dashboard_update'); // Update record
+
+        Route::delete('admin/records/{id}', 'destroy')->name('admin.dashboard_delete_record'); // Delete record
     });
 
 
