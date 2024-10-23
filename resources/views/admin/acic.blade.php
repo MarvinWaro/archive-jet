@@ -9,10 +9,10 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-5">
-                    <x-acic-components />
+                    <x-acic-components :folders="$folders" :acic_records="$acicRecords"/> <!-- Corrected variable name -->
                 </div>
-
             </div>
         </div>
     </div>
 </x-app-layout>
+

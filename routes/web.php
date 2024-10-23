@@ -55,6 +55,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::put('admin/records/{id}', 'update')->name('admin.dashboard_update'); // Update record
 
         Route::delete('admin/records/{id}', 'destroy')->name('admin.dashboard_delete_record'); // Delete record
+
+        Route::get('admin/acic', 'acic_records')->name('admin.acic');
+        Route::get('admin/mds', 'mds_records')->name('admin.mds');
+
     });
 
 

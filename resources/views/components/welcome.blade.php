@@ -15,6 +15,7 @@
     </p>
 </div>
 
+<hr class="w-[80%] mx-auto">
 
 <div class="card-container mb-6">
     <div class="flex justify-center items-center mb-6">
@@ -90,13 +91,6 @@
 
 <div class="mt-6 p-6">
 
-    @if(session('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
-
-
     <a href="{{ route('admin.dashboard_create_record') }}" type="button" class="mb-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 me-3">
             <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
@@ -110,6 +104,22 @@
                 <th>
                     <span class="flex items-center text-gray-900">
                         Action
+                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                        </svg>
+                    </span>
+                </th>
+                <th>
+                    <span class="flex items-center text-gray-900">
+                        Status
+                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                        </svg>
+                    </span>
+                </th>
+                <th>
+                    <span class="flex items-center text-gray-900">
+                        ID
                         <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
                         </svg>
@@ -141,7 +151,7 @@
                 </th>
                 <th>
                     <span class="flex items-center text-gray-900">
-                        Folder Number
+                        Folder Number/Description
                         <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
                         </svg>
@@ -166,14 +176,6 @@
                 <th>
                     <span class="flex items-center text-gray-900">
                         Remarks
-                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
-                        </svg>
-                    </span>
-                </th>
-                <th>
-                    <span class="flex items-center text-gray-900">
-                        Status
                         <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
                         </svg>
@@ -206,10 +208,10 @@
                             </li>
                             <hr class="w-[90%] mx-auto">
                             <li>
-                                <form action="{{ route('admin.dashboard_delete_record', $record->id) }}" method="POST" class="block px-4 py-2">
+                                <form action="{{ route('admin.dashboard_delete_record', $record->id) }}" method="POST" class="delete-form delete-form-{{ $record->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <button type="button" class="delete-button w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center focus:outline-none" data-record-id="{{ $record->id }}">
                                         <i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span>
                                     </button>
                                 </form>
@@ -217,28 +219,51 @@
                         </ul>
                     </div>
                 </td>
+                <td class="{{ strtoupper($record->status) === 'IN_PROGRESS' ? 'text-orange-500' : (strtoupper($record->status) === 'COMPLETED' ? 'text-green-500' : 'text-gray-900') }}">
+                    {{ strtoupper(str_replace('_', '-', $record->status)) }}
+                </td>
+                <td>{{ $record->id }}</td>
                 <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $record->month)->format('F')) }}, {{ strtoupper($record->Year->year) }}</td>
                 <td>{{ strtoupper($record->folder->name) }}</td> <!-- Uppercase for Folder Name -->
-                <td>{{ strtoupper($record->folder_type) }}</td> <!-- Uppercase for Folder Type -->
+                <td>{{ strtoupper($record->folder_type) }} NUMBER</td> <!-- Uppercase for Folder Type -->
                 <td>{{ $record->folder_description }}</td>
                 <!-- Submission Date: Month (formatted as capitalized name) and Year -->
                 <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $record->submission_month)->format('F')) }}, {{ strtoupper($record->submissionYear->year) }}</td>
                 <td>{{ $record->others }}</td>
                 <td>{{ $record->remarks }}</td>
-                <td class="{{ strtoupper($record->status) === 'IN_PROGRESS' ? 'text-orange-500' : (strtoupper($record->status) === 'COMPLETED' ? 'text-green-500' : 'text-gray-900') }}">
-                    {{ strtoupper(str_replace('_', '-', $record->status)) }}
-                </td>
-
-
-
             </tr>
             @endforeach
         </tbody>
+    </table>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select all delete buttons
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    // Prevent form from submitting automatically
+                    event.preventDefault();
 
+                    const recordId = this.getAttribute('data-record-id');
 
-
-
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Submit the form if user confirms the deletion
+                            document.querySelector(`.delete-form-${recordId}`).submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
 </div>
 

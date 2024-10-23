@@ -147,4 +147,32 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const yearSelect = document.getElementById('yearSelect');
+            const submissionYearSelect = document.getElementById('submission_year_select');
+
+            // Ensure yearSelect exists before adding event listener
+            if (yearSelect) {
+                yearSelect.addEventListener('change', function () {
+                    updateSubmissionYearOptions();
+                    updateSubmissionMonthOptions();
+                });
+            }
+
+            function updateSubmissionYearOptions() {
+                // Your logic here to update options for submission years
+            }
+
+            function updateSubmissionMonthOptions() {
+                // Your logic here to update options for submission months
+            }
+        });
+    </script>
+
+
 </x-app-layout>
+
+

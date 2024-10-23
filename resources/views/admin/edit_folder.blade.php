@@ -26,7 +26,7 @@
                                         <input type="text" name="name" id="name" value="{{ old('name', $folder->name) }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
                                     </div>
                                 </div>
-                                <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3">
+                                <button type="button" id="updateFolderButton" class="update-button w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3">
                                     Update
                                 </button>
                             </form>
@@ -36,5 +36,34 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const updateButton = document.querySelector('.update-button');
+            const form = updateButton.closest('form'); // Find the form closest to the update button
+
+            updateButton.addEventListener('click', function(event) {
+                // Prevent form from submitting automatically
+                event.preventDefault();
+
+                Swal.fire({
+                    title: "Notice",
+                    text: "Do you want to save the changes?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, save it!",
+                    cancelButtonText: "Cancel"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form if user confirms the update
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+
 </x-app-layout>
 

@@ -12,7 +12,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-5">
                     <!-- Back Button -->
-                    <a href="{{ route('admin.dashboard') }}" class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-900">
+                    <a id="backButton" href="{{ route('admin.dashboard') }}" class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-900">
                         Back
                     </a>
 
@@ -101,6 +101,9 @@
                                         @enderror
                                     </div>
 
+                                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Record Submission Date</h2>
+                                    <hr class="sm:col-span-2">
+
                                     <!-- Submission Year -->
                                     <div>
                                         <label for="submission_year_select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Submission Year <span class="text-red-500">*</span></label>
@@ -173,8 +176,8 @@
                                 </div>
 
                                 <!-- Submit Button -->
-                                <div class="mt-5">
-                                    <button type="submit" class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2">
+                                <div>
+                                    <button type="button" id="updateButton" class="update-button inline-flex justify-center items-center px-5 py-2.5 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800 w-full">
                                         Update
                                     </button>
                                 </div>
@@ -186,6 +189,37 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const updateButton = document.querySelector('.update-button');
+            const form = updateButton.closest('form'); // Find the form closest to the update button
+
+            updateButton.addEventListener('click', function(event) {
+                // Prevent form from submitting automatically
+                event.preventDefault();
+
+                Swal.fire({
+                    title: "Notice",
+                    text: "Do you want to save the changes?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, save it!",
+                    cancelButtonText: "Cancel"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form if user confirms the update
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+
+
 
 
 </x-app-layout>
