@@ -15,30 +15,21 @@
                     <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Admin Dashboard') }}
                     </x-nav-link>
-
                     <x-nav-link href="{{ route('admin.acic') }}" :active="request()->routeIs('admin.acic')">
                         {{ __('Acic') }}
                     </x-nav-link>
-
                     <x-nav-link href="{{ route('admin.mds') }}" :active="request()->routeIs('admin.mds')">
                         {{ __('Mds') }}
                     </x-nav-link>
-
                     <x-nav-link href="{{ route('admin.completed') }}" :active="request()->routeIs('admin.completed')">
                         {{ __('Completed') }}
                     </x-nav-link>
-
                     <x-nav-link href="{{ route('admin.in-progress') }}" :active="request()->routeIs('admin.in-progress')">
                         {{ __('In-progress') }}
                     </x-nav-link>
-
                     <x-nav-link href="{{ route('admin.folders') }}" :active="request()->routeIs('admin.folders')">
                         {{ __('Folders') }}
                     </x-nav-link>
-
-                    {{-- <x-nav-link href="{{ route('admin.recent') }}" :active="request()->routeIs('admin.recent')">
-                        {{ __('Recent Activities') }}
-                    </x-nav-link> --}}
                 </div>
             </div>
 
@@ -181,7 +172,22 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
-                {{ __('Dashboard M') }}
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('admin.acic') }}" :active="request()->routeIs('admin.acic')">
+                {{ __('Acic') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('admin.mds') }}" :active="request()->routeIs('admin.mds')">
+                {{ __('Mds') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('admin.completed') }}" :active="request()->routeIs('admin.completed')">
+                {{ __('Completed') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('admin.in-progress') }}" :active="request()->routeIs('admin.in-progress')">
+                {{ __('In-Progress') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('admin.folders') }}" :active="request()->routeIs('admin.folders')">
+                {{ __('Folders') }}
             </x-responsive-nav-link>
         </div>
 
@@ -212,10 +218,13 @@
                     </x-responsive-nav-link>
                 @endif
 
+                <x-responsive-nav-link href="{{ route('admin.recent') }}" :active="request()->routeIs('admin.recent')">
+                    {{ __('Recent Activities') }}
+                </x-responsive-nav-link>
+
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf
-
                     <x-responsive-nav-link href="{{ route('logout') }}"
                                     @click.prevent="$root.submit();">
                         {{ __('Log Out') }}

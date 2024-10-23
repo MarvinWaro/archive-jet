@@ -81,7 +81,9 @@ class RecordController extends Controller
             ]);
 
             // Log the activity for reusing a record
-            RecentActivity::create(['activity' => 'Added new record in records table: ' . $record->folder->name]);
+            RecentActivity::create([
+                'activity' => 'Added new record in records table: <strong>' . $record->folder->name . '</strong> with ID#: <strong>' . $record->id . '</strong>'
+            ]);
         } else {
             // Create a new record if no excluded one is found
             $record = Record::create([
@@ -98,11 +100,14 @@ class RecordController extends Controller
             ]);
 
             // Log the activity for creating a new record
-            RecentActivity::create(['activity' => 'Added new record in records table: ' . $record->folder->name]);
+            RecentActivity::create([
+                'activity' => 'Added new record in records table: <strong>' . $record->folder->name . '</strong> with ID#: <strong>' . $record->id . '</strong>'
+            ]);
+
         }
 
         // Redirect with success message
-        return redirect('admin/dashboard')->with('message', 'Record Created Successfully');
+        return redirect('admin/dashboard')->with('success', 'Record Created Successfully');
     }
 
     // Edit method - show the form for editing the record
@@ -164,11 +169,13 @@ class RecordController extends Controller
         ]);
 
         // Log the activity for editing the record
-        RecentActivity::create(['activity' => 'Edited record in from records table: ' . $oldFolder]);
+        RecentActivity::create([
+            'activity' => 'Edited record from records table: <strong>' . $oldFolder . '</strong> with ID#: <strong>' . $record->id . '</strong>'
+        ]);
 
-        return redirect()->route('admin.dashboard')->with('message', 'Record Updated Successfully');
+
+        return redirect()->route('admin.dashboard')->with('success', 'Record Updated Successfully');
     }
-
 
     public function destroy($id) {
         // Find the record by ID
@@ -182,12 +189,44 @@ class RecordController extends Controller
         ]);
 
         RecentActivity::create([
-            'activity' => 'Removed record on Record Table: ' . $folderName . ' with folder description: ' . $record->folder_description,
+            'activity' => 'Removed record on Records Table: <strong>' . $folderName . '</strong>' . ' with ID#: <strong>' . $record->id . '</strong>'
         ]);
 
-        // Redirect back to the dashboard with a success message
-        return redirect()->route('admin.dashboard')->with('message', 'Record Deleted Successfully');
+        return redirect()->route('admin.dashboard')->with('deleted', 'Record Deleted Successfully');
     }
+
+
+    public function acic_records()
+    {
+        // Fetch the first folder with "acic" in its name
+        $acicFolder = Folder::where('name', 'LIKE', '%acic%')->first(); // Use LIKE to find matching names
+
+        // If the folder exists, fetch records related to it
+        $acicRecords = $acicFolder ? Record::where('folder_id', $acicFolder->id)->get() : collect(); // Return an empty collection if no folder found
+
+        $years = Year::all(); // Assuming you fetch all years
+        $folders = Folder::where('name', 'LIKE', '%acic%')->get(); // Fetch only folders that include 'acic' in their name
+        $submission_years = SubmissionYear::all(); // Assuming you fetch all submission years
+
+        return view('admin.acic', compact('acicFolder', 'acicRecords', 'years', 'folders', 'submission_years'));
+    }
+
+    public function mds_records()
+    {
+        // Fetch the first folder with "acic" in its name
+        $mdsFolder = Folder::where('name', 'LIKE', '%mds%')->first(); // Use LIKE to find matching names
+
+        // If the folder exists, fetch records related to it
+        $mdsRecords = $mdsFolder ? Record::where('folder_id', $mdsFolder->id)->get() : collect(); // Return an empty collection if no folder found
+
+        $years = Year::all(); // Assuming you fetch all years
+        $folders = Folder::where('name', 'LIKE', '%mds%')->get(); // Fetch only folders that include 'mds' in their name
+        $submission_years = SubmissionYear::all(); // Assuming you fetch all submission years
+
+        return view('admin.mds', compact('mdsFolder', 'mdsRecords', 'years', 'folders', 'submission_years'));
+    }
+
+
 
 
 

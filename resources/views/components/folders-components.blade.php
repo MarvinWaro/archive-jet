@@ -50,7 +50,7 @@
 
                     <!-- Dropdown menu -->
                     <div id="dropdown-{{ $folder->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton-{{ $folder->id }}">
                             <li>
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     <i class="fa-solid fa-eye me-2"></i>View
@@ -63,11 +63,12 @@
                             </li>
                             <hr class="w-[90%] mx-auto">
                             <li>
-                                <form action="{{ route('admin.destroy_folder', $folder->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this folder?');" class="block m-0 p-0">
+                                <!-- Unique class for each form to handle SweetAlert -->
+                                <form action="{{ route('admin.destroy_folder', $folder->id) }}" method="POST" class="delete-form delete-form-{{ $folder->id }}">
                                     @csrf
                                     @method('DELETE')
                                     <!-- Button styled to behave like a link -->
-                                    <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center focus:outline-none">
+                                    <button type="submit" class="delete-button w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center focus:outline-none" data-folder-id="{{ $folder->id }}">
                                         <i class="fa-solid fa-trash me-2 text-red-500"></i><span class="text-red-500">Delete</span>
                                     </button>
                                 </form>
@@ -80,5 +81,35 @@
             </tr>
             @endforeach
         </tbody>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Select all delete buttons in the folders table
+                document.querySelectorAll('.delete-button').forEach(button => {
+                    button.addEventListener('click', function(event) {
+                        // Prevent the form from submitting automatically
+                        event.preventDefault();
+
+                        const folderId = this.getAttribute('data-folder-id');
+
+                        Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Submit the form if user confirms the deletion
+                                document.querySelector(`.delete-form-${folderId}`).submit();
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
+
     </table>
 </div>

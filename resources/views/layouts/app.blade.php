@@ -77,21 +77,30 @@
         <script src="{{ asset('js/main.js') }}"></script>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener("DOMContentLoaded", function () {
                 const yearSelect = document.getElementById('yearSelect');
                 const monthSelect = document.getElementById('monthSelect');
-                const subYearSelect = document.getElementById('submission_year_select');
-                const subMonthSelect = document.getElementById('submission_month_select');
+                const submissionYearSelect = document.getElementById('submission_year_select');
+                const submissionMonthSelect = document.getElementById('submission_month_select');
 
+                // Check if the yearSelect element exists
+                if (yearSelect) {
+                    yearSelect.addEventListener('change', function () {
+                        updateSubmissionYearOptions();
+                        updateSubmissionMonthOptions();
+                    });
+                }
+
+                // Your function definitions here
                 function updateSubmissionYearOptions() {
                     const selectedYear = parseInt(yearSelect.value);
 
-                    for (let option of subYearSelect.options) {
+                    for (let option of submission_year_select.options) {
                         option.disabled = false;
                         option.hidden = false;
                     }
 
-                    for (let option of subYearSelect.options) {
+                    for (let option of submission_year_select.options) {
                         const year = parseInt(option.value);
                         if (year < selectedYear) {
                             option.disabled = true;
@@ -103,16 +112,16 @@
                 function updateSubmissionMonthOptions() {
                     const selectedYear = parseInt(yearSelect.value);
                     const selectedMonth = parseInt(monthSelect.value);
-                    const selectedSubYear = parseInt(subYearSelect.value);
+                    const selectedSubYear = parseInt(submission_year_select.value);
 
-                    for (let option of subMonthSelect.options) {
+                    for (let option of submission_month_select.options) {
                         option.disabled = false;
                         option.hidden = false;
                     }
 
                     // If submission year is the same as folder year, restrict based on the selected folder month
                     if (selectedSubYear === selectedYear) {
-                        for (let option of subMonthSelect.options) {
+                        for (let option of submission_month_select.options) {
                             const month = parseInt(option.value);
                             if (month < selectedMonth) {
                                 option.disabled = true;
@@ -122,19 +131,21 @@
                     }
                 }
 
+                // Add other event listeners or logic as necessary
                 // Update submission month when submission year or folder year/month changes
                 yearSelect.addEventListener('change', () => {
                     updateSubmissionYearOptions();
                     updateSubmissionMonthOptions();
-                });
+                } );
 
                 monthSelect.addEventListener('change', updateSubmissionMonthOptions);
-                subYearSelect.addEventListener('change', updateSubmissionMonthOptions);
+                submission_year_select.addEventListener('change', updateSubmissionMonthOptions);
 
                 // Initial run
                 updateSubmissionYearOptions();
                 updateSubmissionMonthOptions();
             });
         </script>
+
 
 @include('partials._footer')

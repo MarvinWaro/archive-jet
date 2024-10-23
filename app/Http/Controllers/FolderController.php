@@ -20,8 +20,6 @@ class FolderController extends Controller
         return view('admin.folders', compact('folders'));
     }
 
-
-
     // Show the form for creating a new folder
     public function create()
     {
@@ -53,7 +51,10 @@ class FolderController extends Controller
             ]);
 
             // Log the activity
-            RecentActivity::create(['activity' => 'Added folder: ' . $folder->name]);
+            RecentActivity::create([
+                'activity' => 'Added new folder: <strong>' . $folder->name . '</strong>'  . ' with ID#: <strong>' . $folder->id . '</strong>'
+            ]);
+
         } else {
             // Create a new folder if no excluded one is found
             $folder = Folder::create([
@@ -62,13 +63,14 @@ class FolderController extends Controller
             ]);
 
             // Log the activity
-            RecentActivity::create(['activity' => 'Added folder: ' . $folder->name]);
+            RecentActivity::create([
+                'activity' => 'Added new folder: <strong>' . $folder->name . '</strong>'  . ' with ID#: <strong>' . $folder->id . '</strong>'
+            ]);
         }
 
         return redirect()->route('admin.folders')
-            ->with('success', 'Folder saved successfully.');
+            ->with('success', 'New Folder name saved successfully.');
     }
-
 
     // Show the form for editing a folder
     public function edit($id) // Changed to accept $id instead of Folder
@@ -98,14 +100,15 @@ class FolderController extends Controller
         ]);
 
         // Log the activity for editing
-        RecentActivity::create(['activity' => 'Edited folder from: ' . $oldName . ' to: ' . $folder->name]);
+        RecentActivity::create([
+            'activity' => 'Edited folder name from: <strong>' . $oldName . '</strong> to: <strong>' . $folder->name . '</strong>'  . ' with ID#: <strong>' . $folder->id . '</strong>'
+        ]);
 
         return redirect()->route('admin.folders')
             ->with('success', 'Folder updated successfully.');
     }
 
-
-// Remove the folder from the database (soft delete)
+    // Remove the folder from the database (soft delete)
     public function destroy($id)
     {
         $folder = Folder::findOrFail($id); // Find the folder by ID
@@ -123,20 +126,19 @@ class FolderController extends Controller
         ]);
 
         // Log the activity
-        RecentActivity::create(['activity' => 'Removed folder (Name: ' . $folder->name . ') and its related records.']);
+        RecentActivity::create([
+            'activity' => 'Removed folder (Name: <strong>' . $folder->name . '</strong>) and its related records.',
+        ]);
+
 
         return redirect()->route('admin.folders')
             ->with('deleted', 'Folder deleted successfully.');
     }
-
-
-
 
     public function recentActivities()
     {
         $activities = RecentActivity::orderBy('created_at', 'desc')->get(); // Get recent activities
         return view('admin.recent', compact('activities')); // Pass activities to view
     }
-
 
 }
