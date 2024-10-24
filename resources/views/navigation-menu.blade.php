@@ -21,12 +21,12 @@
                     <x-nav-link href="{{ route('admin.mds') }}" :active="request()->routeIs('admin.mds')">
                         {{ __('Mds') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('admin.completed') }}" :active="request()->routeIs('admin.completed')">
+                    {{-- <x-nav-link href="{{ route('admin.completed') }}" :active="request()->routeIs('admin.completed')">
                         {{ __('Completed') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('admin.in-progress') }}" :active="request()->routeIs('admin.in-progress')">
                         {{ __('In-progress') }}
-                    </x-nav-link>
+                    </x-nav-link> --}}
                     <x-nav-link href="{{ route('admin.folders') }}" :active="request()->routeIs('admin.folders')">
                         {{ __('Folders') }}
                     </x-nav-link>
@@ -180,12 +180,12 @@
             <x-responsive-nav-link href="{{ route('admin.mds') }}" :active="request()->routeIs('admin.mds')">
                 {{ __('Mds') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('admin.completed') }}" :active="request()->routeIs('admin.completed')">
+            {{-- <x-responsive-nav-link href="{{ route('admin.completed') }}" :active="request()->routeIs('admin.completed')">
                 {{ __('Completed') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('admin.in-progress') }}" :active="request()->routeIs('admin.in-progress')">
                 {{ __('In-Progress') }}
-            </x-responsive-nav-link>
+            </x-responsive-nav-link> --}}
             <x-responsive-nav-link href="{{ route('admin.folders') }}" :active="request()->routeIs('admin.folders')">
                 {{ __('Folders') }}
             </x-responsive-nav-link>

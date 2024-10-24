@@ -15,23 +15,6 @@ Route::get('/about', function () {
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
 
-    Route::get('admin/acic', function () {
-        return view('admin.acic');
-    })->name('admin.acic');
-
-    Route::get('admin/mds', function () {
-        return view('admin.mds');
-    })->name('admin.mds');
-
-    Route::get('admin/completed', function () {
-        return view('admin.completed');
-    })->name('admin.completed');
-
-    Route::get('admin/in-progress', function () {
-        return view('admin.in-progress');
-    })->name('admin.in-progress');
-
-
     Route::resource('admin/folders', FolderController::class)->names([
         'index' => 'admin.folders',
         'create' => 'admin.create_folder',
@@ -60,9 +43,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('admin/mds', 'mds_records')->name('admin.mds');
 
     });
-
-
-
 
 });
 
