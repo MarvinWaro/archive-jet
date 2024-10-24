@@ -149,6 +149,34 @@
 
     </table>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select all delete buttons
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    // Prevent form from submitting automatically
+                    event.preventDefault();
+
+                    const recordId = this.getAttribute('data-record-id');
+
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Submit the form if user confirms the deletion
+                            document.querySelector(`.delete-form-${recordId}`).submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
 </div>
 

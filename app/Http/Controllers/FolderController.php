@@ -101,7 +101,7 @@ class FolderController extends Controller
 
         // Log the activity for editing
         RecentActivity::create([
-            'activity' => 'Edited folder name from: <strong>' . $oldName . '</strong> to: <strong>' . $folder->name . '</strong>'  . ' with ID#: <strong>' . $folder->id . '</strong>'
+            'activity' => 'Edited folder name from: <strong>' . $oldName . '</strong> to: <strong>' . $folder->name . '</strong>'  . 'with ID#: <strong>' . $folder->id . '</strong>'
         ]);
 
         return redirect()->route('admin.folders')

@@ -22,9 +22,38 @@ class RecordController extends Controller
         // Fetch folders that are not excluded and are active
         $folders = Folder::where('exclude', 0)->where('activate', 1)->get();
 
-        // Pass the records and folders to the view
-        return view("admin.dashboard", compact('records', 'folders'));
+        // Count ACIC records
+        $acicCount = Record::whereHas('folder', function ($query) {
+            $query->where('name', 'LIKE', '%acic%');
+        })
+        ->where('exclude', 0)
+        ->where('activate', 1)
+        ->count();
+
+        // Count MDS records
+        $mdsCount = Record::whereHas('folder', function ($query) {
+            $query->where('name', 'LIKE', '%mds%');
+        })
+        ->where('exclude', 0)
+        ->where('activate', 1)
+        ->count();
+
+        // Count Completed records
+        $completedCount = Record::where('status', 'COMPLETED')
+            ->where('exclude', 0)
+            ->where('activate', 1)
+            ->count();
+
+        // Count In-Progress records
+        $inProgressCount = Record::where('status', 'IN_PROGRESS')
+            ->where('exclude', 0)
+            ->where('activate', 1)
+            ->count();
+
+        // Pass the records, folders, and counts to the view
+        return view("admin.dashboard", compact('records', 'folders', 'acicCount', 'mdsCount', 'completedCount', 'inProgressCount'));
     }
+
 
     public function create() {
         $years = Year::orderBy('year', 'desc')->get(); // Fetch years in descending order
@@ -198,11 +227,17 @@ class RecordController extends Controller
 
     public function acic_records()
     {
-        // Fetch the first folder with "acic" in its name
-        $acicFolder = Folder::where('name', 'LIKE', '%acic%')->first(); // Use LIKE to find matching names
+        // Fetch the first folder with "acic" in its name that is not excluded
+        $acicFolder = Folder::where('name', 'LIKE', '%acic%')
+            ->where('exclude', 0) // Ensure the folder is not excluded
+            ->where('activate', 1) // Ensure the folder is active
+            ->first();
 
         // If the folder exists, fetch records related to it
-        $acicRecords = $acicFolder ? Record::where('folder_id', $acicFolder->id)->get() : collect(); // Return an empty collection if no folder found
+        $acicRecords = $acicFolder ? Record::where('folder_id', $acicFolder->id)
+            ->where('exclude', 0) // Include only records that are not excluded
+            ->where('activate', 1) // Include only active records
+            ->get() : collect(); // Return an empty collection if no folder found
 
         $years = Year::all(); // Assuming you fetch all years
         $folders = Folder::where('name', 'LIKE', '%acic%')->get(); // Fetch only folders that include 'acic' in their name
@@ -211,13 +246,20 @@ class RecordController extends Controller
         return view('admin.acic', compact('acicFolder', 'acicRecords', 'years', 'folders', 'submission_years'));
     }
 
+
     public function mds_records()
     {
-        // Fetch the first folder with "acic" in its name
-        $mdsFolder = Folder::where('name', 'LIKE', '%mds%')->first(); // Use LIKE to find matching names
+        // Fetch the first folder with "mds" in its name that is not excluded
+        $mdsFolder = Folder::where('name', 'LIKE', '%mds%')
+            ->where('exclude', 0) // Ensure the folder is not excluded
+            ->where('activate', 1) // Ensure the folder is active
+            ->first(); // Use LIKE to find matching names
 
-        // If the folder exists, fetch records related to it
-        $mdsRecords = $mdsFolder ? Record::where('folder_id', $mdsFolder->id)->get() : collect(); // Return an empty collection if no folder found
+        // If the folder exists, fetch records related to it, ensuring records are not excluded and are active
+        $mdsRecords = $mdsFolder ? Record::where('folder_id', $mdsFolder->id)
+            ->where('exclude', 0) // Include only records that are not excluded
+            ->where('activate', 1) // Include only active records
+            ->get() : collect(); // Return an empty collection if no folder found
 
         $years = Year::all(); // Assuming you fetch all years
         $folders = Folder::where('name', 'LIKE', '%mds%')->get(); // Fetch only folders that include 'mds' in their name
@@ -225,6 +267,12 @@ class RecordController extends Controller
 
         return view('admin.mds', compact('mdsFolder', 'mdsRecords', 'years', 'folders', 'submission_years'));
     }
+
+
+
+
+
+
 
 
 

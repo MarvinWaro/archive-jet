@@ -25,7 +25,7 @@
                     <dl class="space-y-2">
                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">ACIC</dt>
 
-                        <dd class="text-5xl font-light md:text-6xl text-dark">32</dd>
+                        <dd class="text-5xl font-light md:text-6xl text-dark">{{ $acicCount }}</dd>
 
                         <dd class="flex items-center space-x-1 text-sm font-medium text-blue-500 dark:text-blue-400">
                             <span>Record Folders</span>
@@ -41,7 +41,7 @@
                     <dl class="space-y-2">
                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">MDS</dt>
 
-                        <dd class="text-5xl font-light md:text-6xl text-dark">54</dd>
+                        <dd class="text-5xl font-light md:text-6xl text-dark">{{ $mdsCount }}</dd>
 
                         <dd class="flex items-center space-x-1 text-sm font-medium text-blue-500 dark:text-blue-400">
                             <span>Record Folders</span>
@@ -57,7 +57,7 @@
                     <dl class="space-y-2">
                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">COMPLETED</dt>
 
-                        <dd class="text-5xl font-light md:text-6xl text-dark">21</dd>
+                        <dd class="text-5xl font-light md:text-6xl text-dark">{{ $completedCount }}</dd>
 
                         <dd class="flex items-center space-x-1 text-sm font-medium text-blue-500 dark:text-blue-400">
                             <span>Record Folders</span>
@@ -73,7 +73,7 @@
                     <dl class="space-y-2">
                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">IN-PROGRESS</dt>
 
-                        <dd class="text-5xl font-light md:text-6xl text-dark">12</dd>
+                        <dd class="text-5xl font-light md:text-6xl text-dark">{{ $inProgressCount }}</dd>
 
                         <dd class="flex items-center space-x-1 text-sm font-medium text-blue-500 dark:text-blue-400">
                             <span>Record Folders</span>
@@ -86,6 +86,7 @@
         </section>
     </div>
 </div>
+
 
 <hr class="w-[80%] mx-auto">
 
