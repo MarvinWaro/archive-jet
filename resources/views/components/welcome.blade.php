@@ -227,7 +227,7 @@
                 <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $record->month)->format('F')) }}, {{ strtoupper($record->Year->year) }}</td>
                 <td>{{ strtoupper($record->folder->name) }}</td> <!-- Uppercase for Folder Name -->
                 <td>{{ strtoupper($record->folder_type) }} NUMBER</td> <!-- Uppercase for Folder Type -->
-                <td>{{ $record->folder_description }}</td>
+                <td>{{ Str::limit($record->folder_description, 15, '...') }}</td>
                 <!-- Submission Date: Month (formatted as capitalized name) and Year -->
                 <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $record->submission_month)->format('F')) }}, {{ strtoupper($record->submissionYear->year) }}</td>
                 <td>{{ $record->others }}</td>

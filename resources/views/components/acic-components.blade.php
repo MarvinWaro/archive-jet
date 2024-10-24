@@ -138,7 +138,7 @@
                     <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $acicRecord->month)->format('F')) }}, {{ strtoupper($acicRecord->Year->year) }}</td>
                     <td>{{ strtoupper($acicRecord->folder->name) }}</td> <!-- Uppercase for Folder Name -->
                     <td>{{ strtoupper($acicRecord->folder_type) }} NUMBER</td> <!-- Uppercase for Folder Type -->
-                    <td>{{ $acicRecord->folder_description }}</td>
+                    <td>{{ Str::limit($acicRecord->folder_description, 15, '...') }}</td>
                     <!-- Submission Date: Month (formatted as capitalized name) and Year -->
                     <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $acicRecord->submission_month)->format('F')) }}, {{ strtoupper($acicRecord->submissionYear->year) }}</td>
                     <td>{{ $acicRecord->others }}</td>

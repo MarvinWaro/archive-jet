@@ -74,4 +74,10 @@ From Guest / Landing page */
 }
 
 
+td:nth-child(7) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px; /* Adjust this based on your font size */
+}
 

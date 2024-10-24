@@ -32,4 +32,12 @@ if (document.getElementById("filter-table") && typeof simpleDatatables.DataTable
             return table;
         }
     });
+
+    // Truncate folder description in the 7th column to 15 characters
+    document.querySelectorAll('#filter-table tbody tr td:nth-child(7)').forEach(function(td) {
+        const text = td.textContent.trim(); // Get the text and trim spaces
+        if (text.length > 15) {
+            td.textContent = text.substring(0, 15) + '...'; // Truncate to 15 characters and add ellipsis
+        }
+    });
 }

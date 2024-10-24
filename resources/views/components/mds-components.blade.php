@@ -135,7 +135,7 @@
                     <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $mdsRecord->month)->format('F')) }}, {{ strtoupper($mdsRecord->Year->year) }}</td>
                     <td>{{ strtoupper($mdsRecord->folder->name) }}</td> <!-- Uppercase for Folder Name -->
                     <td>{{ strtoupper($mdsRecord->folder_type) }} NUMBER</td> <!-- Uppercase for Folder Type -->
-                    <td>{{ $mdsRecord->folder_description }}</td>
+                    <td>{{ Str::limit($mdsRecord->folder_description, 15, '...') }}</td>
                     <!-- Submission Date: Month (formatted as capitalized name) and Year -->
                     <td>{{ strtoupper(\Carbon\Carbon::createFromFormat('m', $mdsRecord->submission_month)->format('F')) }}, {{ strtoupper($mdsRecord->submissionYear->year) }}</td>
                     <td>{{ $mdsRecord->others }}</td>

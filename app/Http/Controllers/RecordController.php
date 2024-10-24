@@ -227,24 +227,25 @@ class RecordController extends Controller
 
     public function acic_records()
     {
-        // Fetch the first folder with "acic" in its name that is not excluded
-        $acicFolder = Folder::where('name', 'LIKE', '%acic%')
+        // Fetch folders that contain 'acic' in their name (including 'acic mds') and are not excluded and active
+        $acicFolders = Folder::where('name', 'LIKE', '%acic%')
             ->where('exclude', 0) // Ensure the folder is not excluded
             ->where('activate', 1) // Ensure the folder is active
-            ->first();
+            ->get();
 
-        // If the folder exists, fetch records related to it
-        $acicRecords = $acicFolder ? Record::where('folder_id', $acicFolder->id)
+        // Fetch records related to all ACIC folders
+        $acicRecords = Record::whereIn('folder_id', $acicFolders->pluck('id'))
             ->where('exclude', 0) // Include only records that are not excluded
             ->where('activate', 1) // Include only active records
-            ->get() : collect(); // Return an empty collection if no folder found
+            ->get();
 
-        $years = Year::all(); // Assuming you fetch all years
+        $years = Year::all(); // Fetch all years
         $folders = Folder::where('name', 'LIKE', '%acic%')->get(); // Fetch only folders that include 'acic' in their name
-        $submission_years = SubmissionYear::all(); // Assuming you fetch all submission years
+        $submission_years = SubmissionYear::all(); // Fetch all submission years
 
-        return view('admin.acic', compact('acicFolder', 'acicRecords', 'years', 'folders', 'submission_years'));
+        return view('admin.acic', compact('acicFolders', 'acicRecords', 'years', 'folders', 'submission_years'));
     }
+
 
 
     public function mds_records()
@@ -267,15 +268,5 @@ class RecordController extends Controller
 
         return view('admin.mds', compact('mdsFolder', 'mdsRecords', 'years', 'folders', 'submission_years'));
     }
-
-
-
-
-
-
-
-
-
-
 
 }
